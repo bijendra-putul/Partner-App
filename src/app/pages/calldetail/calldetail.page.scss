@@ -1,0 +1,143 @@
+.tabfontsize ion-segment-button{
+    font-size: 13px;
+    text-transform: capitalize;
+    color: #1b5ae0;
+    font-weight: bold;
+    min-width: inherit;
+}
+.segment-button-checked .selectbutton{
+    background: #1b5ae0;
+    padding: 8px 12px;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.tabsheader::after{
+    content: '';
+    background-image: none;
+}
+.tabsheader{
+   
+    .searchbar{width: 34px;
+        height: 34px;
+        --padding-end: 8px;
+        --padding-start: 8px;
+        color: #1b5ae0;
+    }
+}
+
+.selectbutton{
+    padding: 8px 12px;
+}
+ion-segment-button{
+    --padding-end:0;
+    --padding-start:0;
+    flex:0 0 auto;
+}
+.vendordetal{
+
+    --padding-start:0;
+    .lineleft{
+        border-left: 4px solid #1b5ae0;
+        padding-left: 10px;
+        
+        p{
+            color: #4a4a4a;
+            width: 190px;
+            font-weight: bold;
+            span{
+              font-weight: normal;
+            }
+        }
+    }
+    .imgwide{
+        max-width: 26px;
+        display: flex;
+        /* flex-shrink: 1; */
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+    .timetable{
+        color:#82a7f8;
+        font-size: 12px;
+
+    }
+    .clallnow{
+        --padding-start: 0;
+        --padding-end: 0;
+        height: 48px;
+        margin: 0;
+        
+    }
+    .missedcall{
+      color: #ff0432;
+      font-size: 12px;
+      padding: 4px 3px;
+      position: absolute;
+      right: 6px;
+      top: 4px;
+      border-radius: 1px;
+      text-transform: capitalize;
+    --box-shadow: none;
+    --background: #d6585830;
+    border-radius: 5px;
+    .button-native{
+        background: none;
+    }
+   
+    }
+    .connected{
+        @extend .missedcall;
+        color:#179771;
+        --background: #58d6a430;
+
+    }
+    .scheduled{
+        @extend .missedcall;
+        color:#1b5ae0;
+        --background: #3d15ec1a;
+    }
+}
+
+button{
+    background: none !important;
+    background-color: none !important;
+    box-shadow: none !important;
+  }
+
+  .searchbardiv{
+    top: 5px;
+    position: absolute;
+   
+  }
+
+.segment-button-indicator.segment-button-indicator-animated{ display: none; opacity: 0 !important;}
+
+.segment-button-checked{
+    --border-width:0px;
+    --indicator-color-checked: 0;   
+  }
+
+ 
+  .oppstext{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    font-weight: bold;
+    background: #f8f7e0;
+    border: 1px solid #dfc752;
+    font-size: 13px;
+    margin: 0 10px;
+  }
+  .search-error{
+    padding: 15px;
+    font-size: 16px;
+    position: absolute;
+    top: 113px;
+    background: #f9e4e4;
+    border: 1px solid #f09b9b;
+    width: 94%;
+    margin: 0 auto;
+    left: 11px;
+  }

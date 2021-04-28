@@ -1,0 +1,100 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="vnederspace">e-Seller <span>Hub</span></ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="registerdiv">
+  <ion-toolbar>
+    <ion-title class="retext" >
+      Login
+    </ion-title>
+    <ion-title class="verification">
+      Enter your Email Id for verification
+    </ion-title>
+  </ion-toolbar>
+</div>
+
+<!-- <ion-grid>
+  <ion-row justify-content-center>
+    <ion-col align-self-center>
+      <ion-item>
+        <ion-label stacked>Username</ion-label>
+        <ion-input [(ngModel)]="username"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-button (click)="login()" expand="block">
+      Login
+      </ion-button>
+      <ion-button expand="block" color="secondary" routerLink="/register" routerDirection="forward">Register</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-grid> -->
+
+ <form class="formzindex" [formGroup]="loginForm" (ngSubmit)="registerLoginbtn()" >
+  <ion-list class="email-form">
+    <ion-item>
+      <ion-label position="floating" >Email</ion-label>
+      <ion-input type="email" class="form-control"  name="email" formControlName="email">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" class="form-control" name="password" formControlName="password">
+      </ion-input>
+      </ion-item>
+    <ion-toolbar>
+
+      <ion-button  href="#" class="forgetpassword" slot="end" routerLink="/forgetpassword" routerDirection="root">Forgot Password ?</ion-button>
+    </ion-toolbar>
+
+    <ion-toolbar>
+      <ion-button class="sumbmitbutton" type="submit" expand="block" [disabled]="!loginForm.valid">Submit</ion-button>
+    </ion-toolbar>
+  </ion-list>
+</form>
+<!-- <form (ngSubmit)="login()" #form="ngForm">
+    <ion-list class="email-form">
+      <ion-item>
+        <ion-input type="email" class="form-control"  name="email" placeholder="Email" [(ngModel)]="model.email" required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="model.password" required>
+        </ion-input>
+        </ion-item>
+      <ion-toolbar>
+
+        <ion-button  href="#" class="forgetpassword" slot="end" routerLink="/forgetpassword" routerDirection="root">Forgot Password ?</ion-button>
+      </ion-toolbar>
+
+      <ion-toolbar>
+        <ion-button class="sumbmitbutton" type="submit" expand="block"  [disabled]="submitted || !form.valid">Submit</ion-button>
+      </ion-toolbar>
+
+     
+    </ion-list>
+  </form> -->
+  
+  
+</ion-content>
+<ion-footer class="call-footer">
+  <ion-item lines="none" style="--border: 0;">
+    <ion-avatar slot="start" class="userbg">
+      <img src="./assets/users-small.png">
+      
+    </ion-avatar>
+    <ion-label class="support">
+      <h2>Techjockey Support</h2>
+      <h3>Call for instant help </h3>
+    </ion-label>
+    <ion-avatar slot="end">
+      <a href="tel:9205781956"><img src="./assets/call.svg"></a>
+    </ion-avatar>
+  </ion-item>
+  
+</ion-footer>

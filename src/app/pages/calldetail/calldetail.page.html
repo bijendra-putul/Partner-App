@@ -1,0 +1,181 @@
+<ion-header color="primary" >
+  <ion-toolbar  color="primary" style="padding: 0 10px;">
+    <ion-title class="vnederspace inner">e-Seller <span>Hub</span></ion-title>
+    <ion-buttons (click)="logout()" slot="end">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;"><path d="M10 9.408l2.963 2.592-2.963 2.592v-1.592h-8v-2h8v-1.592zm-2-4.408v4h-8v6h8v4l8-7-8-7zm6-3c-1.787 0-3.46.474-4.911 1.295l.228.2 1.396 1.221c1.004-.456 2.114-.716 3.287-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.283-.26-3.288-.715l-1.396 1.221-.228.2c1.452.82 3.125 1.294 4.912 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"/></svg>
+  </ion-buttons>
+  </ion-toolbar>
+  
+</ion-header>
+
+<ion-header class="tabsheader" >
+  <ion-toolbar>
+    <ion-segment class="tabfontsize" value="all" 
+    scrollable="true"
+    [(ngModel)]="segmentModel" 
+    (ionChange)="segmentChanged($event)" style="--border-width:0; --border-color:#fff">
+      <ion-segment-button value="All" (click)="calldetail()" style="--border-width:0; --border-color:#fff;margin-left: 10px;">
+        <span class="selectbutton" >All</span>
+      </ion-segment-button>
+      <ion-segment-button value="Missed">
+        <span class="selectbutton">Missed</span>
+      </ion-segment-button>
+      <ion-segment-button value="Connected">
+        <span class="selectbutton">Connected</span>
+      </ion-segment-button>
+      <ion-segment-button value="Scheduled">
+        <span class="selectbutton">Scheduled</span>
+      </ion-segment-button>
+    </ion-segment>
+     <ion-searchbar
+     *ngIf="showSearchbar"
+     id="ion-searchbar" 
+     showCancelButton="always"
+     (ionCancel)="showSearchbar = false; this.term=''" 
+     (ionClear)="onClear($event)"
+     [(ngModel)]="term" animated="true"  class="searchbardiv"  placeholder="Search by Customer Name"></ion-searchbar>
+     <ion-buttons slot="end">
+      <ion-button *ngIf="!this.showSearchbar" (click)="showSearchbar = true" class="searchbar">
+        <ion-icon slot="icon-only" name="Search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+<!-- Segment with secondary color -->
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" >
+  <ion-refresher #refresherRef slot="fixed" (ionRefresh)="calldetail($event)">
+    <ion-refresher-content
+    pullingIcon="arrow-dropdown"
+    pullingText="Pull to refresh"
+    refreshingSpinner="circles">
+    </ion-refresher-content>
+    </ion-refresher>
+  <div *ngIf="segmentModel === 'All'">
+    <ion-card class="vendordetal"  *ngFor="let call of callinfo | filter:term"  style="z-index: 2;">
+      <div>
+      <ion-item class="ion-no-padding" lines="none">
+       <ion-label class="lineleft">
+         <p>Name :<span> {{call.name}}</span></p>
+         <p>
+           Interested in : <span>{{call.product_name}}</span>
+         </p>
+       </ion-label>
+       <div>
+       <ion-button [ngClass]="{'missedcall': call.call_status =='Missed', 'connected':call.call_status =='Connected', 'scheduled':call.call_status =='Scheduled' }">{{call.call_status}}</ion-button>
+      </div>
+     </ion-item>
+     <ion-item lines="none">
+       <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+       <ion-label class="timetable">{{call.start_date | date : 'dd-MMM-yyyy hh:mm:ss' }}
+       </ion-label>
+     </ion-item>
+     <ion-button expand="full"
+     (click)="brand_detail(call.brand_id, call.acd_uuid)" class="clallnow">Call Now</ion-button>
+    </div>
+    
+   </ion-card> 
+   <ion-infinite-scroll (ionInfinite)="loadMore($event)" loadingSpinner="bubbles" loadingText="Loading Products..." class="spinner-div">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+   
+   <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+       Please try a different keyword
+      </div>
+    <!-- <ion-infinite-scroll (ionInfinite)="loadMore($event)" loadingSpinner="bubbles" loadingText="Loading Products..." class="spinner-div">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+  </div>
+  <div *ngIf="segmentModel === 'Missed'">
+      <div *ngIf="missedcalldata.length === 0; else loggedOut2" class="oppstext">
+        Oops! We can't find what you're looking for.
+      </div>
+      <ng-template #loggedOut2>
+        <ion-card class="vendordetal" *ngFor="let callm of missedcalldata | filter:term" style="z-index: 2;">
+          <div>
+            <div *ngIf="segmentModel === 'Missed'">
+              <ion-item class="ion-no-padding" lines="none">
+               <ion-label class="lineleft">
+                 <p>Name :<span> {{callm.name}}</span></p>
+                 <p>
+                   Interested in : <span>{{callm.product_name}}</span>
+                 </p>
+               </ion-label>
+               <div>
+               <ion-button class="missedcall">{{callm.call_status}}</ion-button>
+               </div>
+             </ion-item>
+             <ion-item lines="none">
+               <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+               <ion-label class="timetable">{{callm.start_date | date : 'dd-MMM-yyyy hh:mm:ss'}}
+               </ion-label>
+             </ion-item>
+             <ion-button expand="full" class="clallnow" (click)="brand_detail(callm.brand_id, callm.acd_uuid)">Call Now</ion-button>
+            </div>
+          </div>
+         
+        </ion-card>
+      </ng-template>
+      <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+       Please try a different keyword
+      </div>
+    </div>
+  <div *ngIf="segmentModel === 'Connected'">
+    <div *ngIf="connecteddata == null; else loggedOut" class="oppstext">
+      Oops! We can't find what you're looking for.
+    </div>
+    <ng-template #loggedOut>
+      <ion-card class="vendordetal" *ngFor="let connet of connecteddata | filter:term" style="z-index: 2;">
+        <ion-item class="ion-no-padding" lines="none">
+         <ion-label class="lineleft">
+           <p>Name :<span> {{connet.name}}</span></p>
+           <p>
+             Interested in : <span>{{connet.product_name}}</span>
+           </p>
+         </ion-label>
+         <div>
+         <ion-button class="connected">{{connet.call_status}}</ion-button>
+         </div>
+       </ion-item>
+       <ion-item lines="none">
+         <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+         <ion-label class="timetable">{{connet.start_date | date : 'dd-MMM-yyyy hh:mm:ss'}}
+         </ion-label>
+       </ion-item>
+       <ion-button expand="full" class="clallnow" (click)="brand_detail(connet.brand_id,connet.acd_uuid)">Call Now</ion-button>
+     </ion-card> 
+    </ng-template>
+    <div *ngIf="term.length !== 0" 
+    class="search-error">We can't find what you're looking for.<br/>
+       Please try a different keyword
+      </div>
+  </div>
+  <div *ngIf="segmentModel === 'Scheduled'">
+    <div *ngIf="connecteddata == null; else loggedOut" class="oppstext">
+      Oops! We can't find what you're looking for.
+    </div>
+    <ng-template #loggedOut>
+      <ion-card class="vendordetal" *ngFor="let schedule of scheduleddata | filter:term" style="z-index: 2;">
+        <ion-item class="ion-no-padding" lines="none">
+         <ion-label class="lineleft">
+           <p>Name :<span> {{schedule.name}}</span></p>
+           <p>
+             Interested in : <span>{{schedule.product_name}}</span>
+           </p>
+         </ion-label>
+         <div>
+         <ion-button class="scheduled">{{schedule.call_status }}</ion-button>
+         </div>
+       </ion-item>
+       <ion-item lines="none">
+         <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+         <ion-label class="timetable">{{schedule.start_date | date : 'dd-MMM-yyyy hh:mm:ss'}}
+         </ion-label>
+       </ion-item>
+       <ion-button expand="full" class="clallnow" (click)="brand_detail(schedule.brand_id,schedule.acd_uuid)">Call Now</ion-button>
+     </ion-card> 
+    </ng-template>
+    <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+       Please try a different keyword
+      </div>
+  </div>
+  </ion-content>

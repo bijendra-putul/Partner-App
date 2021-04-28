@@ -1,0 +1,90 @@
+
+<ion-content>
+  <div class="rescheduledemo">
+    <h2>Demo Reschedule</h2>
+    <h3>Demo Reschedule request for {{this.productname}}</h3>
+    <h4>Please suggest an alternative demo date and time as per your availability</h4>
+  </div>
+  <ion-item lines="none" class="demo-reschedule-timer" >
+    <!-- <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+    <ion-label class="demodtatcontainer" *ngFor="let retday of retDates |  slice:0:3; let i = index"
+    (click)="setIndex(i,retday.day, retday.date)" [class.selectedIndex]="selectedIndex === i">
+    <div class="weakdate">{{retday.day}}</div>
+    <div class="monthdate">{{retday.date}}</div>
+    </ion-label> -->
+    <div style="display: flex; align-items: center; justify-content: center; width: 100%;">
+    <ion-input 
+      class="demodtatcontainer"
+      *ngFor="let retday of retDates |  slice:0:3; let i = index"
+      [(ngModel)]="retday.day" [class.selectedIndex]="selectedIndex === i"
+      name="collectedamt" (click)="setIndex(i,retday.day, retday.date)"  style="padding-top: 6px !important;overflow: hidden;">
+        <div class="weakdate">{{retday.day}}</div>
+        <div class="monthdate">{{retday.date}}</div>
+    </ion-input>
+  </div>
+  </ion-item>
+    <div *ngIf="this.starttime && selectedIndex === 0" class="timeslotbox">Please Select time post after {{this.starttimehs}}</div>
+    <ion-slides *ngIf="selectedIndex === 0; else loggedOut" lines="none" style="border-bottom: 1px solid white !important;height: 51px;" [options]="slideOptsOne" class="slideroptiontimer" lines="none">
+      <ion-slide 
+      *ngFor="let rettime of retDates | slice:this.positionvalue:isLast; let isLast = last; let i = index" 
+      (click)="setIndextime(i,rettime.time)">
+      <ion-input [(ngModel)]="rettime.time" 
+       class="timepicker" 
+       role="tab"
+       style="padding-left: 9px !important;
+       padding-right: 10px !important;width: 0;
+       margin-left: 10px;" 
+       [class.selectedtime]="selectedTime === i" 
+       [ngClass]="{'orange':this.positionvalue === i.length}"
+       >
+       <h2 style="padding: 0;margin: 0;">{{rettime.time}}</h2>
+       </ion-input>
+       
+      </ion-slide>
+     </ion-slides>
+     <ng-template #loggedOut>
+      <ion-slides *ngIf="selectedIndex === 1" lines="none" style="border-bottom: 1px solid white !important;height: 51px;" [options]="slideOptsOne" class="slideroptiontimer" lines="none">
+        <ion-slide 
+       *ngFor="let rettime of retDates | slice:3 ; let i = index" 
+       (click)="setIndextime2(i,rettime.time)">
+       <ion-input [(ngModel)]="rettime.time" 
+        class="timepicker" 
+        role="tab"
+        style="padding-left: 9px !important;
+        padding-right: 10px !important;width: 0;
+        margin-left: 10px;"
+        [class.selectedtime]="selectedTime2 === i"
+        >
+        <h2 style="padding: 0;margin: 0;">{{rettime.time}}</h2>
+        </ion-input>
+       </ion-slide>
+    
+     
+      </ion-slides>
+      <ion-slides *ngIf="selectedIndex === 2" lines="none" style="border-bottom: 1px solid white !important;height: 51px;" [options]="slideOptsOne" class="slideroptiontimer" lines="none">
+        <ion-slide 
+       *ngFor="let rettime of retDates | slice:3; let i = index" 
+       (click)="setIndextime3(i,rettime.time)">
+       <ion-input [(ngModel)]="rettime.time" 
+        class="timepicker" 
+        role="tab"
+        style="padding-left: 9px !important;
+        padding-right: 10px !important;width: 0;
+        margin-left: 10px;"  
+        [class.selectedtime]="selectedTime3 === i" 
+        >
+        <h2 style="padding: 0;margin: 0;">{{rettime.time}}</h2>
+        </ion-input>
+       </ion-slide>
+    
+     
+      </ion-slides>
+     </ng-template>
+     
+     
+  <ion-tab-bar lines="none" class="buttondemo" >
+    <button class="cancel" color="dark" (click)="rescheduledemodismess()"> Cancel</button>
+    <button class="submit" color="medium" (click)="rescheduledemo()"> Submit</button>
+  </ion-tab-bar>
+  
+</ion-content>

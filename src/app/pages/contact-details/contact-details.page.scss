@@ -1,0 +1,36 @@
+
+
+.contenttext{
+ padding: 20px;
+ ion-item{
+    --padding-start: 0;
+
+ }
+ ion-checkbox{
+    margin: 5px 19px 5px 0px;
+ }
+  }
+.buttoninfo{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    button{
+        width: 50%;
+        height: 70px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .cancel{
+         background: #e5e5e5;
+         color: #000;
+    }
+    .callnow{
+        background: #fb641b;
+        a{
+           color:#fff;
+           text-decoration: none;
+        }
+   }
+}

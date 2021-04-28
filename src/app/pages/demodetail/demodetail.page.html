@@ -1,0 +1,204 @@
+<ion-header color="primary">
+  <ion-toolbar  color="primary" style="padding: 0 10px;">
+    <!-- <ion-title class="vnederspace inner">Vendor<span>Space</span></ion-title> -->
+    <ion-title class="vnederspace inner">e-Seller <span>Hub</span></ion-title>
+    <ion-buttons (click)="logout()" slot="end">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #fff;"><path d="M10 9.408l2.963 2.592-2.963 2.592v-1.592h-8v-2h8v-1.592zm-2-4.408v4h-8v6h8v4l8-7-8-7zm6-3c-1.787 0-3.46.474-4.911 1.295l.228.2 1.396 1.221c1.004-.456 2.114-.716 3.287-.716 4.411 0 8 3.589 8 8s-3.589 8-8 8c-1.173 0-2.283-.26-3.288-.715l-1.396 1.221-.228.2c1.452.82 3.125 1.294 4.912 1.294 5.522 0 10-4.477 10-10s-4.478-10-10-10z"/></svg>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-header class="tabsheader">
+  <ion-toolbar>
+    <ion-segment class="tabfontsize"  value="one" 
+    scrollable="true"
+    [(ngModel)]="segmentModeldemo" 
+    (ionChange)="segmentChanged($event)" style="--border-width:0; --border-color:#fff">
+      <ion-segment-button value="one" style="--border-width: 0;
+      --border-color: #fff;
+      margin-left: 10px;">
+        <span class="selectbutton">All</span>
+      </ion-segment-button>
+      <ion-segment-button value="two">
+        <span class="selectbutton">Missed</span>
+      </ion-segment-button>
+      <ion-segment-button value="three">
+        <span class="selectbutton">Connected</span>
+      </ion-segment-button>
+      <ion-segment-button value="four">
+        <span class="selectbutton">Scheduled</span>
+      </ion-segment-button>
+    </ion-segment>
+    <ion-searchbar
+     *ngIf="showSearchbar" 
+     showCancelButton="always"
+     (ionCancel)="showSearchbar = false;this.term=''" 
+     [(ngModel)]="term" animated="true" class="searchbardiv" placeholder="Search by Customer Name"></ion-searchbar>
+   <ion-buttons slot="end">
+     <ion-button *ngIf="!this.showSearchbar" (click)="showSearchbar = true" class="searchbar">
+       <ion-icon slot="icon-only" name="search"></ion-icon>
+     </ion-button>
+   </ion-buttons>
+<!-- Segment with secondary color -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+  <ion-refresher #refresherRef slot="fixed" (ionRefresh)="demodetail($event)">
+    <ion-refresher-content
+    pullingIcon="arrow-dropdown"
+    pullingText="Pull to refresh"
+    refreshingSpinner="circles">
+    </ion-refresher-content>
+    </ion-refresher>
+   
+  <div *ngIf="segmentModeldemo === 'one'">
+   <ion-card class="vendordetal" *ngFor="let demo of demoinfo | filter:term" style="z-index: 2;">
+      <div>
+          <ion-item class="ion-no-padding">
+            <ion-label class="lineleft">
+              <p>Name :<span>{{demo.name}}</span></p>
+              <p>
+                Interested in : <span> {{demo.product_name}}</span>
+              </p>
+            </ion-label>
+            <ion-button class="missedcall">{{demo.call_status}}</ion-button>
+            
+          <div *ngIf="demo.call_status == 'Confirmed' || demo.call_status == 'Rescheduled' ; else loggedOut">
+          </div>
+          <ng-template #loggedOut>
+            <div class="reschduldemo" 
+            (click)="resheduleDemo(demo.id, demo.acd_uuid, demo.brand_id, demo.product_name, demo.start_date)">Reschedule Demo
+          </div>
+          </ng-template>
+          </ion-item>
+          <ion-item lines="none">
+            <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+            <ion-label class="timetable"> {{demo.start_date | date : 'dd-MMM-yyyy hh:mm:ss'}}</ion-label>
+          </ion-item>
+          <ion-button  class="clallnow" (click)="brand_detail(demo.brand_id,demo.acd_uuid)">Call Now</ion-button>
+        
+          <div *ngIf="(demo.start_date | date : 'dd-MMM-yyyy hh:mm:ss') > this.jstoday; else datebuttondisable" style="    width: 50%;
+          float: right;">
+          <ion-button  class="clallnowgray" style="--background-activated:#c4c1c1; width: 100%;"
+          [innerHTML]="demo.call_status === 'Pending' ? 'Accept' : 'Accepted'" 
+          [ngClass]="{'orange':demo.call_status === 'Pending'}" 
+          (click)="acceptdemolist(demo.id, demo.acd_uuid, demo.call_status)" 
+          
+          >
+          </ion-button>
+          </div>
+          <ng-template #datebuttondisable>
+            <ion-button  class="clallnowgray" style="--background-activated:#c4c1c1"
+            [innerHTML]="demo.call_status === 'Pending' ? 'Accept' : 'Accepted'" 
+            [ngClass]="{'orange':demo.call_status === 'Pending'}" 
+            (click)="acceptdemolist(demo.id, demo.acd_uuid, demo.call_status)" 
+            [disabled]="disableButton"
+            >
+          </ion-button>
+          </ng-template>
+     </div>
+     
+  </ion-card> 
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)" loadingSpinner="bubbles" loadingText="Loading Products..." class="spinner-div">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+    Please try a different keyword
+   </div>
+  </div>
+
+
+  <div *ngIf="segmentModeldemo === 'two'">
+    <div *ngIf="missedcalldatademo.length === 0; else loggedOut" class="oppstext">
+      Oops! We can't find what you're looking for.
+    </div>
+    <ng-template #loggedOut>
+      <ion-card class="vendordetal" *ngFor="let demom of missedcalldatademo | filter:term" style="z-index: 2;">
+        <ion-item class="ion-no-padding">
+          <ion-label class="lineleft">
+            <p>Name :<span>{{demom.name}}</span></p>
+            <p>
+              Interested in : <span> {{demom.product_name}}</span>
+            </p>
+          </ion-label>
+          <ion-button class="missedcall">{{demom.call_status}}</ion-button>
+          <!-- <div class="reschduldemo" (click)="resheduleDemo()">Reschedule Demo</div> -->
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+          <ion-label class="timetable"> {{demom.start_date | date : 'dd-MMM-yyyy hh:mm:ss' }}</ion-label>
+          <!-- <ion-label class="timetable">1:00 PM 18 August 2020</ion-label> -->
+        </ion-item>
+        <ion-button  class="clallnow" (click)="brand_detail(demom.brand_id,demom.acd_uuid)">Call Now</ion-button>
+        <ion-button  class="clallnow" color="medium" (click)="acceptdemolist(demom.id, demom.acd_uuid, demom.call_status)">Accepted</ion-button>
+      </ion-card>
+    </ng-template>
+    
+   <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+    Please try a different keyword
+   </div>
+  </div>
+
+  <div *ngIf="segmentModeldemo === 'three'">
+    <div  *ngIf="connecteddatademo.length === 0; else loggedOut" class="oppstext">
+      Oops! We can't find what you're looking for.
+    </div>
+    <ng-template #loggedOut>
+      <ion-card class="vendordetal" *ngFor="let democ of connecteddatademo | filter:term" style="z-index: 2;">
+        <ion-item class="ion-no-padding">
+          <ion-label class="lineleft">
+            <p>Name :<span>{{democ.name}}</span></p>
+            <p>
+              Interested in : <span> {{democ.product_name}}</span>
+            </p>
+          </ion-label>
+          <ion-button class="missedcall">{{democ.call_status}}</ion-button>
+          <!-- <div class="reschduldemo" (click)="resheduleDemo()">Reschedule Demo</div> -->
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+          <ion-label class="timetable"> {{democ.start_date | date : 'dd-MMM-yyyy hh:mm:ss'}}</ion-label>
+          <!-- <ion-label class="timetable">1:00 PM 18 August 2020</ion-label> -->
+        </ion-item>
+        <ion-button  class="clallnow" (click)="brand_detail(democ.brand_id,democ.acd_uuid)">Call Now</ion-button>
+        <ion-button  class="clallnow" color="medium" (click)="acceptdemolist(democ.id, democ.acd_uuid, democ.call_status)">Accepted</ion-button>
+      </ion-card>
+    </ng-template>
+    
+   <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+    Please try a different keyword
+   </div>
+  </div>
+
+  <div *ngIf="segmentModeldemo === 'four'">
+    <div *ngIf="scheduleddatademo.length === 0; else loggedOut" class="oppstext">
+      Oops! We can't find what you're looking for.
+    </div>
+    <ng-template #loggedOut>
+      <ion-card class="vendordetal" *ngFor="let demosh of scheduleddatademo | filter:term" style="z-index: 2;">
+        <ion-item class="ion-no-padding">
+          <ion-label class="lineleft">
+            <p>Name :<span>{{demosh.name}} </span></p>
+            <p>
+              Interested in : <span> {{demosh.product_name}}</span>
+            </p>
+          </ion-label>
+          <ion-button class="missedcall">{{demosh.call_status}}</ion-button>
+          <!-- <div class="reschduldemo" (click)="resheduleDemo()">Reschedule Demo</div> -->
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label class="imgwide"><img src="../../../assets/alarm-clock.svg"></ion-label>
+          <ion-label class="timetable"> {{demosh.start_date | date : 'dd-MMM-yyyy hh:mm:ss' }}</ion-label>
+         
+        </ion-item>
+        <ion-button  (click)="brand_detail(demosh.brand_id,demosh.acd_uuid)">Call Now</ion-button>
+        <ion-button  class="clallnow" color="medium" (click)="acceptdemolist(demosh.id, demosh.acd_uuid, demosh.call_status)">Accepted</ion-button>
+      </ion-card>
+    </ng-template>
+   <div *ngIf="term.length !== 0" class="search-error">We can't find what you're looking for.<br/>
+    Please try a different keyword
+   </div>
+  </div>
+</ion-content>
+

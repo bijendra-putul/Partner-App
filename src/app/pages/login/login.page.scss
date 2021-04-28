@@ -1,0 +1,106 @@
+
+.login-logo {
+    padding: 20px 0;
+    min-height: 200px;
+    text-align: center;
+  }
+  
+  .login-logo img {
+    max-width: 150px;
+  }
+  
+  .list {
+    margin-bottom: 0;
+  }
+  
+
+.registerdiv{
+    margin-top: 26px;
+    .retext{
+        font-size: 26px;
+        font-weight: bold;
+    }
+    .verification{
+        font-size: 18px;
+        color:#afafaf;
+        padding-top: 10px;
+        font-weight: normal;
+    }
+   
+}
+.email-form{
+    padding: 22px;
+    ion-item{
+        --padding-start:0;
+    }
+    ion-label{
+      font-size: 20px; font-weight: bold;    margin-top: -6px;
+    }
+    ion-input {
+      font-size: 14px;
+      font-weight: bold;
+      ::placeholder{
+        font-size: 18px;
+        color:#000 !important;
+      }
+  }
+}
+.forgetpassword{
+    --background: none;
+    --color: #afafaf;
+    --box-shadow: inherit;
+    text-align: right;
+    font-size: 14px;
+    text-transform: capitalize;
+    --padding-end: 0;
+    
+}
+
+.email-form ::-webkit-input-placeholder { /* Edge */
+    color:#4a4a4a !important;
+  }
+  
+  .email-form :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:#4a4a4a !important;
+  }
+  
+  .email-form ::placeholder {
+    color:#4a4a4a !important;
+  }
+  
+  .native-input.sc-ion-input-md:invalid{ font-size: 18px;}
+  .sumbmitbutton{--background: none;
+    background-image: linear-gradient(to bottom, #fb641b, #f76b1c);
+    border-radius: 4px;height: 52px;text-transform: capitalize;}
+    
+   
+
+  .footer-md::before{
+    background-image: none !important;
+  }
+
+  .call-footer{
+    padding: 12px 9px;
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    .item-inner{
+      border: 0 !important;
+    }
+    .userbg{
+      width: 71px;
+      height: 71px;
+    }
+    .item-inner{
+      border: 0 !important;
+    }
+    .support h2{
+      font-size: 14px;color: rgba(0, 0, 0, 0.3);text-transform: uppercase;}
+    .support h3{color: #000000;font-size: 14px; text-transform: capitalize;}
+  }
+
+  .formzindex{
+     z-index: 2;
+     position: relative;
+     background: #fff;
+  }

@@ -1,0 +1,27 @@
+
+<ion-content >
+  <div class="contenttext"  >
+  <ion-label lines="none" >
+    <p style="margin-bottom: 20px;">Please select the call representative’s contact number.</p>
+  </ion-label>
+  <ion-list>
+    <ion-radio-group style="--margin-right: 15px;margin-right: 15px; --margin-inline-end: 19px;"
+     allow-empty-selection="true" 
+     name="radio-group" (ionChange)="radioGroupChange($event)">
+        <ion-item lines="none" *ngFor="let phone of getbrand; let i = index" 
+        (ionSelect)="radioSelect($event)">
+        <ion-label>+91 {{phone.contact_number}}</ion-label>
+        <ion-radio slot="start" 
+         name="{{phone.contact_number}}" 
+         value="{{phone.contact_number}}" [checked]="i==0"  (click)="selectFilters(phone.contact_number)"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+    
+  </ion-list>
+</div>
+  <ion-tab-bar lines="none" class="buttoninfo">
+    <button class="cancel" (click)="goBack()"> Cancel</button>
+    <button class="callnow" type="submit" (click)="callbackAgent()">Call Now</button>
+  </ion-tab-bar>
+</ion-content> 
+
